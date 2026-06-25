@@ -1,0 +1,35 @@
+name: Inventory Producer
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: "Duration (seconds)"
+        required: true
+        default: "60"
+
+      rate:
+        description: "Ticks per second"
+        required: true
+        default: "3"
+
+      num_combos:
+        description: "Number of Store/Product combinations"
+        required: true
+        default: "300"
+
+jobs:
+  produce-inventory:
+    runs-on: ubuntu-latest
+
+    steps:
+      ...
+      - name: Run Inventory Producer
+        run: |
+          python inventory_producer.py \
+            --stores-csv "Data/SPTStore Data Files/MavenMarket_Stores.csv" \
+            --products-csv "Data/SPTStore Data Files/MavenMarket_Products.csv" \
+            --topic inventory \
+            --num-combos ${{ github.event.inputs.num_combos }} \
+            --rate ${{ github.event.inputs.rate }} \
+            --duration ${{ github.event.inputs.duration }}
