@@ -42,9 +42,9 @@ jobs:
       - name: Run Orders Producer
         run: |
           python orders_producer.py \
-              --stores-csv data/MavenMarket_Stores.csv \
-              --products-csv data/MavenMarket_Products.csv \
-              --customers-csv data/MavenMarket_Customers.csv \
+              --stores-csv data/MavenMarket_Stores.csv
+              --products-csv data/MavenMarket_Products.csv
+              --customers-csv data/MavenMarket_Customers.csv
               --topic orders \
               --rate ${{ github.event.inputs.rate }} \
               --new-customer-rate ${{ github.event.inputs.new_customer_rate }} \
