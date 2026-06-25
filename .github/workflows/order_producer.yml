@@ -1,0 +1,51 @@
+name: Orders Producer
+
+on:
+  workflow_dispatch:
+    inputs:
+      duration:
+        description: "Duration (seconds)"
+        required: true
+        default: "150"
+
+      rate:
+        description: "Orders per second"
+        required: true
+        default: "5"
+
+      new_customer_rate:
+        description: "Fraction of new customers"
+        required: true
+        default: "0"
+
+jobs:
+  produce-orders:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create .env
+        run: |
+          echo "KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}" >> .env
+          echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> .env
+          echo "KAFKA_API_SECRET=${{ secrets.KAFKA_API_SECRET }}" >> .env
+          echo "KAFKA_ORDERS_TOPIC=${{ secrets.KAFKA_ORDERS_TOPIC }}" >> .env
+
+      - name: Run Orders Producer
+        run: |
+          python orders_producer.py \
+            --stores-csv "Data/SPTStore Data Files/MavenMarket_Stores.csv" \
+            --products-csv "Data/SPTStore Data Files/MavenMarket_Products.csv" \
+            --customers-csv "Data/SPTStore Data Files/MavenMarket_Customers.csv" \
+            --topic orders \
+            --rate ${{ github.event.inputs.rate }} \
+            --new-customer-rate ${{ github.event.inputs.new_customer_rate }} \
+            --duration ${{ github.event.inputs.duration }}
