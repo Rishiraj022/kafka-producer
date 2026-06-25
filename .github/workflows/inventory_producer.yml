@@ -46,9 +46,9 @@ jobs:
       - name: Run Inventory Producer
         run: |
           python inventory_producer.py \
-            --stores-csv "Data/SPTStore Data Files/MavenMarket_Stores.csv" \
-            --products-csv "Data/SPTStore Data Files/MavenMarket_Products.csv" \
-            --topic inventory \
-            --num-combos ${{ github.event.inputs.num_combos }} \
-            --rate ${{ github.event.inputs.rate }} \
-            --duration ${{ github.event.inputs.duration }}
+              --stores-csv data/MavenMarket_Stores.csv \
+              --products-csv data/MavenMarket_Products.csv \
+              --topic inventory \
+              --num-combos ${{ github.event.inputs.num_combos }} \
+              --rate ${{ github.event.inputs.rate }} \
+              --duration ${{ github.event.inputs.duration }}
