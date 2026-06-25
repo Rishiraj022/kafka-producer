@@ -45,7 +45,7 @@ jobs:
 
       - name: Run Inventory Producer
         run: |
-          python inventory_producer.py \
+            python inventory_producer.py \
               --stores-csv data/MavenMarket_Stores.csv \
               --products-csv data/MavenMarket_Products.csv \
               --topic inventory \
