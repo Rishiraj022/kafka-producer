@@ -23,7 +23,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      ...
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create .env
+        run: |
+          echo "KAFKA_BOOTSTRAP_SERVERS=${{ secrets.KAFKA_BOOTSTRAP_SERVERS }}" >> .env
+          echo "KAFKA_API_KEY=${{ secrets.KAFKA_API_KEY }}" >> .env
+          echo "KAFKA_API_SECRET=${{ secrets.KAFKA_API_SECRET }}" >> .env
+          echo "KAFKA_INVENTORY_TOPIC=${{ secrets.KAFKA_INVENTORY_TOPIC }}" >> .env
+
       - name: Run Inventory Producer
         run: |
           python inventory_producer.py \
